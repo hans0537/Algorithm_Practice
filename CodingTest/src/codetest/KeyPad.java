@@ -8,6 +8,7 @@ public class KeyPad {
         int left = 10;  //"*" 을 10으로 가정
         int right = 12; //"#" 을 12으로 가정
         
+        
         for(int i : numbers) {
         	if(i == 1 || i == 4 || i == 7) {
         		answer += "L";

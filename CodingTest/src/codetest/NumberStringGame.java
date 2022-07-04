@@ -21,6 +21,7 @@ public class NumberStringGame {
         numbers.put("eight", 8);
         numbers.put("nine", 9);
         
+        
         String[] temp = s.split("");
         String tempS = "";
         for (int i = 0; i < temp.length; i++) {
