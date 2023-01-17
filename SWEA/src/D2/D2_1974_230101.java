@@ -1,0 +1,96 @@
+package D2;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+
+// 1974. 스도쿠 검증
+public class D2_1974_230101 {
+
+	public static void main(String args[]) throws Exception
+	{
+		Scanner sc = new Scanner(System.in);
+		int T;
+		T=sc.nextInt();
+
+		for(int test_case = 1; test_case <= T; test_case++)
+		{
+			int[][] arr = new int[9][9];
+			for (int i = 0; i < arr.length; i++) {
+				for (int j = 0; j < arr.length; j++) {
+					arr[i][j] = sc.nextInt();
+				}
+			}
+
+			boolean check1 = rowCheck(arr, 0);
+			boolean check2 = colCheck(arr, 0);
+			boolean check3 = boxCheck(arr, 0, 0);
+			
+			if(check1 && check2 && check3) System.out.println("#" + test_case + " " + 1);
+			else System.out.println("#" + test_case + " " + 0);
+		}
+	}
+
+	public static boolean rowCheck(int[][] arr, int row) {
+
+		if(row == 9) return true;
+
+		Integer[] tmp = new Integer[9];
+		for (int i = 0; i < tmp.length; i++) {
+			tmp[i] = arr[row][i];
+		}
+
+		List<Integer> list = Arrays.asList(tmp);
+		Set<Integer> numSet = new HashSet<>(list);
+
+		if(list.size()!= numSet.size()){
+			return false;
+		}
+
+		return rowCheck(arr, row + 1);
+	}
+
+	public static boolean colCheck(int[][] arr, int col) {
+
+		if(col == 9) return true;
+
+		Integer[] tmp = new Integer[9];
+		for (int i = 0; i < tmp.length; i++) {
+			tmp[i] = arr[i][col];
+		}
+
+		List<Integer> list = Arrays.asList(tmp);
+		Set<Integer> numSet = new HashSet<>(list);
+
+		if(list.size()!= numSet.size()){
+			return false;
+		}
+
+		return colCheck(arr, col + 1);
+	}
+
+	public static boolean boxCheck(int[][] arr, int row, int col) {
+
+		if(row == 9) return true;
+
+		Integer[] tmp = new Integer[9];
+		int idx = 0;
+		for (int i = row; i < row + 3; i++) {
+			for (int j = col; j < col + 3; j++) {
+				tmp[idx++] = arr[i][j];
+			}
+		}
+
+		List<Integer> list = Arrays.asList(tmp);
+		Set<Integer> numSet = new HashSet<>(list);
+
+		if(list.size()!= numSet.size()){
+			return false;
+		}
+		
+		if(col == 6) return boxCheck(arr, row + 3, 0);
+		return boxCheck(arr, row, col + 3);
+	}
+}
