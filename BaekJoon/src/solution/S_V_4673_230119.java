@@ -2,6 +2,9 @@ package solution;
 
 import java.util.ArrayList;
 
+// #4673 셀프 넘버
+// https://www.acmicpc.net/problem/4673
+
 public class S_V_4673_230119 {
 
 	public static void main(String[] args) {
