@@ -1,0 +1,64 @@
+package solution;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+// #9184 신나는 함수 실행
+// https://www.acmicpc.net/problem/9184
+
+public class S_II_9184_230202 {
+	
+	// 이미 계산된 값들을 저장할 배열
+	// a, b, c 세개이므로 3차원 배열
+	static int[][][] dp = new int[21][21][21];
+	
+	public static void main(String[] args) throws IOException {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		while(true) {
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			int c = Integer.parseInt(st.nextToken());
+			
+			// -1 -1 -1 이 나오면 종료
+			if (a == -1 && b == -1 && c == -1) {
+				break;
+			}
+			
+			System.out.println("w(" + a + ", " + b + ", " + c + ") = " + w(a, b, c));
+		}
+		
+	}
+	
+	public static int w(int a, int b, int c) { 
+		
+		// 이미 계산되어 저장되어있는 경우 해당 값을 바로 반환 
+		if(check(a,b,c) && dp[a][b][c] != 0) {
+			return dp[a][b][c];
+		}
+		
+		if(a <= 0 || b <= 0 || c <= 0) {
+			return 1;
+		}
+			
+		if(a > 20 || b > 20 || c > 20) {
+			return dp[20][20][20] = w(20, 20, 20);
+		}
+			
+		if(a < b && b < c) {
+			return dp[a][b][c] = w(a, b, c - 1) + w(a, b - 1, c - 1) - w(a, b - 1, c);
+		}
+		
+		return dp[a][b][c] = w(a - 1, b, c) + w(a - 1, b - 1, c) + w(a - 1, b, c - 1) - w(a - 1, b - 1, c - 1);
+	}
+	
+	// 범위 밖을 나갈 수 있으므로 
+	static boolean check(int a, int b, int c) {
+		return 0 <= a && a <= 20 && 0 <= b && b <= 20 && 0 <= c && c <= 20; 
+	}
+}
