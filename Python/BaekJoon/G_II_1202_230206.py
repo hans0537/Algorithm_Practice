@@ -1,31 +1,32 @@
 import heapq # 우선순위 큐 모듈
+import sys
+input = sys.stdin.readline
 
 N, K = map(int, input().split())
 
-# minheap큐 생성
-# 빈 리스트를 생성한 후 heapq의 함수를 호출할 때마다 
-# jem (heap) 에 요소 추가
-jem = [list(map(int, input().split())) for _ in range(N)]
-print(jem)
-heapq.heapify(jem)
-print(jem)
-# for _ in range(N):
-#     heapq.heappush(jem, list(map(int, input().split())))
-
+gem = [list(map(int, input().split())) for _ in range(N)]
 bag = [int(input()) for _ in range(K)]
-# 무게가 가장 작은 가방에 가장 큰 가격의 보석을 넣어야 함으로 정렬
+# 무게가 가장 작은 가방에 무게는 작고 가장 큰 가격의 보석을 넣어야 함으로 정렬
+# 가방 오름차순 정렬
 bag.sort()
+# 보석의 무게순으로 오름차순 정렬 (가격은 heap으로 최대값 판별할 예정)
+gem.sort()
+
 
 ans = 0
 tmp = []
+# 정렬된 가방 리스트에서 작은것부터 하나씩 가져온다
 for i in bag:
-    while jem and i >= jem[0][0]:
-        heapq.heappush(tmp, -heapq.heappop(jem)[1])
-    
+    # 보석이 있고, 가방 무게에 들어갈 수 있는 보석을 판단
+    while gem and i >= gem[0][0]:
+        # tmp 힙 리스트에 보석이 들어갈수 있는 것들중에 
+        # -를 해줌으로서 가장최소(즉 나중에 -해줄거니까 가장 비싼 보석)값을 넣어준다
+        heapq.heappush(tmp, -gem[0][1])
+        # gem리스트에 가장 최소값인 즉 방금전에 넣으거 빼기
+        print(heapq.heappop(gem))
+    # 만약 tmp 배열에 값이 있고 가방이 남았으면 가장 비싼거 부터 빼오기
     if tmp:
         ans -= heapq.heappop(tmp)
-    elif not jem:
-        break
 
 print(ans)
 
