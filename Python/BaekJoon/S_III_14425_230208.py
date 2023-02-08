@@ -1,3 +1,6 @@
+# 14425 문자열의 집합
+# https://www.acmicpc.net/problem/14425
+
 N, M = map(int, input().split())
 
 n_set = [input() for _ in range(N)]
