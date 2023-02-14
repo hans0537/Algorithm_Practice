@@ -4,6 +4,7 @@
 n = int(input())
 stack = []
 check = True
+# 현재 변수를 이용하여 불필요한 반복문을 줄일 수 있다
 now = 1
 ans = ''
 for _ in range(n):
@@ -12,11 +13,13 @@ for _ in range(n):
         stack.append(now)
         ans += '+\n'
         now += 1
-
+    
+    # top값이 같으면 pop
     if num == stack[-1]:
         stack.pop()
         ans += '-\n'
     else:
+        # 아니면 실패
         print('NO')
         check = False
         break
