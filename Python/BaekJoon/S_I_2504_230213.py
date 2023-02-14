@@ -60,7 +60,6 @@ for i in s:
         if len(stack) == 0:
             good = False
             break
-
         # 스택의 top 값을 뽑아 확인한다.
         tmp = stack.pop()
         # 만약 () 짝이 맞으면 그냥 2 를 스택에 넣는다
