@@ -7,15 +7,12 @@ N, M, K = map(int, input().split())
 arr = [list(map(int, input().split())) for _ in range(N)]
 lst = [list(map(int, input().split())) for _ in range(K)]
 
-ans = 0
-res = permutations(range(0, K))
-for p in res:
-    temp = copy.deepcopy(arr)
-    for i in p:
-        r = lst[i][0]
-        c = int(lst[i][1])
-        k = int(lst[i][2])
+ans = 1e9
 
+for p in permutations(lst, K):
+    # 각각의 경우의 수 에 대해 체크 해야함으로 깊은복사
+    temp = copy.deepcopy(arr)
+    for r, c, k in p:
         sr, sc = r - k - 1, c - k - 1
         er, ec = r + k - 1, c + k - 1
 
