@@ -10,11 +10,12 @@ def dfs(idx, cnt, tlst):
 
     dfs(idx + 1, cnt + 1, tlst + [lst[idx]])
     dfs(idx + 1, cnt, tlst)
-
+    
 while True:
     lst = list(map(int, input().split()))
+    # 0이 입력되면 종료
     if lst[0] == 0:
         break
-
+        
     dfs(1, 0, [])
     print()
