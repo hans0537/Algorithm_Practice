@@ -4,50 +4,65 @@ from collections import deque
 from copy import deepcopy
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
-def is_valid(x, y, tlist):
-    return 0 <= x < N and 0 <= y < M and tlist[x][y] != 0
+def is_valid(x, y):
+    return 0 <= x < N and 0 <= y < M and garden[x][y] != 0
 
 # G, R 배양액 퍼트리기
-def bfs(glist, rlist, tlist):
+def bfs(glist, rlist):
     gq = deque(glist)
     rq = deque(rlist)
     v = [[0] * M for _ in range(N)]
 
     # g이면 -1
     # r이면 1
-    v[glist[0][0]][glist[0][1]] = -1
-    v[rlist[0][0]][rlist[0][1]] = 1
+    for i in range(len(glist)):
+        v[glist[i][0]][glist[i][1]] = -1
+
+    for i in range(len(rlist)):
+        v[rlist[i][0]][rlist[i][1]] = 1
+
 
     cnt = 0
     # 동일한 시간에 퍼져서 만나면 꽃이 피므로
     # 하나라도 퍼지는게 끝나면 종료
     while gq and rq:
         gx, gy = gq.popleft()
-        rx, ry = rq.popleft()
+        rx, ry = rq .popleft()
+        # if v[gx][gy] == 10 or v[rx][ry] == 10:
+        #     continue
 
         for d in range(4):
             m_gx = gx + dx[d]
             m_gy = gy + dy[d]
 
-            if is_valid(m_gx, m_gy, tlist):
+            if is_valid(m_gx, m_gy):
+                if v[m_gx][m_gy] == 10:
+                    continue
+
                 if not v[m_gx][m_gy]:
                     v[m_gx][m_gy] = v[gx][gy] - 1
                     gq.append((m_gx, m_gy))
-                elif v[m_gx][m_gy] != 10 and v[m_gx][m_gy][0] == 'r' and v[m_gx][m_gy][1] == gt + 1:
-                    v[m_gx][m_gy] = 10
-                    cnt += 1
+                # 가려는 곳이 더해졌을때 0 이면
+                elif v[m_gx][m_gy] > 0:
+                    if v[m_gx][m_gy] + v[gx][gy] - 1 == 0:
+                        cnt += 1
+                        v[m_gx][m_gy] = 10
 
         for d in range(4):
             m_rx = rx + dx[d]
             m_ry = ry + dy[d]
 
-            if is_valid(m_rx, m_ry, tlist):
+            if is_valid(m_rx, m_ry):
+                if v[m_rx][m_ry] == 10:
+                    continue
+
                 if not v[m_rx][m_ry]:
-                    v[m_rx][m_ry] = ('r', rt + 1)
-                    rq.append((m_rx, m_ry, rt + 1))
-                elif v[m_rx][m_ry] != 10 and v[m_rx][m_ry][0] == 'g' and v[m_rx][m_ry][1] == rt + 1:
-                    v[m_rx][m_ry] = 10
-                    cnt += 1
+                    v[m_rx][m_ry] = v[rx][ry] + 1
+                    rq.append((m_rx, m_ry))
+                elif v[m_rx][m_ry] < 0:
+                    if v[m_rx][m_ry] + v[rx][ry] + 1 == 0:
+                        cnt += 1
+                        v[m_rx][m_ry] = 10
 
     return cnt
 
@@ -57,8 +72,7 @@ def dfs(n, gcnt, rcnt, glist, rlist):
 
     if n == len(can_place):
         if gcnt == 0 and rcnt == 0:
-            tlist = deepcopy(garden)
-            cnt = bfs(glist, rlist, tlist)
+            cnt = bfs(glist, rlist)
             ans = max(ans, cnt)
         return
 
