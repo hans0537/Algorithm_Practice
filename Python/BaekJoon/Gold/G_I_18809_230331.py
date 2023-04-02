@@ -13,15 +13,17 @@ def bfs(glist, rlist, tlist):
     rq = deque(rlist)
     v = [[0] * M for _ in range(N)]
 
-    v[glist[0][0]][glist[0][1]] = ('g', glist[0][2])
-    v[rlist[0][0]][rlist[0][1]] = ('r', rlist[0][2])
+    # g이면 -1
+    # r이면 1
+    v[glist[0][0]][glist[0][1]] = -1
+    v[rlist[0][0]][rlist[0][1]] = 1
 
     cnt = 0
     # 동일한 시간에 퍼져서 만나면 꽃이 피므로
     # 하나라도 퍼지는게 끝나면 종료
     while gq and rq:
-        gx, gy, gt = gq.popleft()
-        rx, ry, rt = rq.popleft()
+        gx, gy = gq.popleft()
+        rx, ry = rq.popleft()
 
         for d in range(4):
             m_gx = gx + dx[d]
@@ -29,8 +31,8 @@ def bfs(glist, rlist, tlist):
 
             if is_valid(m_gx, m_gy, tlist):
                 if not v[m_gx][m_gy]:
-                    v[m_gx][m_gy] = ('g', gt + 1)
-                    gq.append((m_gx, m_gy, gt + 1))
+                    v[m_gx][m_gy] = v[gx][gy] - 1
+                    gq.append((m_gx, m_gy))
                 elif v[m_gx][m_gy] != 10 and v[m_gx][m_gy][0] == 'r' and v[m_gx][m_gy][1] == gt + 1:
                     v[m_gx][m_gy] = 10
                     cnt += 1
@@ -76,7 +78,7 @@ for i in range(N):
     tmp = list(map(int, input().split()))
     for j in range(M):
         if tmp[j] == 2:
-            can_place.append((i, j, 0))
+            can_place.append((i, j))
     garden.append(tmp)
 
 ans = 0
