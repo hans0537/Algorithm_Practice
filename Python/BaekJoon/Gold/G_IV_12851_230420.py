@@ -22,3 +22,5 @@ while q:
             q.append(d)
 
 print(dp[K] - 1, cnt)
+
+
